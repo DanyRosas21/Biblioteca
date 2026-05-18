@@ -2,16 +2,16 @@ FROM php:8.4-fpm
 
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
-nginx \
-git \
-unzip \
-libpng-dev \
-libonig-dev \
-libxm12-dev \
-zip \
-curl \
-libpq-dev \
-&& docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
+    nginx \
+    git \
+    unzip \
+    libpng-dev \
+    libonig-dev \
+    libxm12-dev \
+    zip \
+    curl \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
 
 # Instalar Composer
 COPY -- from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -20,7 +20,7 @@ COPY -- from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
 
 # Copiar proyecto
-COPY ..
+COPY . .
 
 # Instalar dependencias de Laravel
 RUN composer install -- no-dev -- optimize-autoloader
