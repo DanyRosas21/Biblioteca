@@ -19,570 +19,548 @@
             </style>
         @endif
 
-            <style>
-            .sidebar-transition {
-                transition: transform 0.3s ease-in-out;
+        <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .menu-active {
+            color: #3b82f6;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
-            .overlay {
-                background-color: rgba(0, 0, 0, 0.5);
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
-            .active-menu {
-                background-color: #3b82f6;
-                color: white;
-            }
-            @media (min-width: 768px) {
-                .mobile-overlay {
-                    display: none !important;
-                }
-            }
-            </style>
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
     </head>
-    <body class="bg-gray-100">
-    <!-- Contenedor principal -->
-    <div class="flex h-screen overflow-hidden">
-        
-        <!-- Overlay para móviles -->
-        <div id="mobileOverlay" class="mobile-overlay fixed inset-0 bg-black bg-opacity-50 z-20 hidden"></div>
-        
-        <!-- Sidebar -->
-        <aside id="sidebar" class="sidebar-transition bg-gray-800 text-white w-64 md:w-64 md:flex flex-col fixed md:relative z-30 h-full transform -translate-x-full md:translate-x-0">
-            <!-- Logo y título -->
-            <div class="p-4 border-b border-gray-700">
-                <div class="flex items-center">
-                    <i class="fas fa-book-open text-2xl text-blue-400 mr-3"></i>
-                    <h1 class="text-xl font-bold">Biblioteca Central</h1>
-                </div>
-                <p class="text-gray-400 text-sm mt-1">Panel de Administración</p>
-            </div>
-            
-            <!-- Menú lateral -->
-            <nav class="flex-1 p-4">
-                <ul class="space-y-2">
-                    <li>
-                        <a href="#" data-section="inicio" class="menu-item flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors">
-                            <i class="fas fa-home mr-3"></i>
-                            <span>Inicio</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-section="libros" class="menu-item flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors">
-                            <i class="fas fa-book mr-3"></i>
-                            <span>Libros</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-section="prestamos" class="menu-item flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors">
-                            <i class="fas fa-exchange-alt mr-3"></i>
-                            <span>Préstamos</span>
-                        </a>
-                    </li>
-                    <li class="pt-8 mt-8 border-t border-gray-700">
-                        <a href="#" data-section="salir" class="menu-item flex items-center p-3 rounded-lg hover:bg-red-700 transition-colors">
-                            <i class="fas fa-sign-out-alt mr-3"></i>
-                            <span>Salir</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            
-            <!-- Información de usuario -->
-            <div class="p-4 border-t border-gray-700">
-                <div class="flex items-center">
-                    <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center mr-3">
-                        <span class="font-bold">A</span>
+    <body class="bg-gray-50">
+    
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <!-- Logo y título -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-book-open text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold text-gray-800">Biblioteca</h1>
+                            <p class="text-xs text-gray-500">Proyecto de biblioteca</p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="font-medium">Administrador</p>
-                        <p class="text-sm text-gray-400">admin@biblioteca.com</p>
-                    </div>
-                </div>
-            </div>
-        </aside>
-        
-        <!-- Contenido principal -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            
-            <!-- Header -->
-            <header class="bg-white shadow-sm border-b">
-                <div class="flex items-center justify-between p-4">
-                    <!-- Botón hamburguesa para móviles -->
-                    <button id="menuToggle" class="md:hidden text-gray-600 hover:text-gray-900">
-                        <i class="fas fa-bars text-xl"></i>
+                    
+                    <!-- Botón hamburguesa móvil -->
+                    <button id="mobileMenuBtn" class="md:hidden text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-bars text-2xl"></i>
                     </button>
+                </div>
+                
+                <!-- Menú de navegación -->
+                <div id="mobileMenu" class="hidden md:flex flex-col md:flex-row md:items-center md:space-x-8 mt-4 md:mt-0">
+                    <a href="#inicio" class="nav-link text-gray-600 hover:text-blue-600 transition-colors py-2 md:py-0">Inicio</a>
+                    <a href="#libros" class="nav-link text-gray-600 hover:text-blue-600 transition-colors py-2 md:py-0">Libros</a>
+                    <a href="#servicios" class="nav-link text-gray-600 hover:text-blue-600 transition-colors py-2 md:py-0">Servicios</a>
+                    <a href="#nosotros" class="nav-link text-gray-600 hover:text-blue-600 transition-colors py-2 md:py-0">Nosotros</a>
+                    <a href="#contacto" class="nav-link text-gray-600 hover:text-blue-600 transition-colors py-2 md:py-0">Contacto</a>
                     
-                    <!-- Menú de navegación superior -->
-                    <nav class="hidden md:flex space-x-1">
-                        <a href="#" data-section="inicio" class="header-menu-item px-4 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition-colors">Inicio</a>
-                        <a href="#" data-section="usuarios" class="header-menu-item px-4 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition-colors">Usuarios</a>
-                        <a href="#" data-section="libros" class="header-menu-item px-4 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition-colors">Libros</a>
-                        <a href="#" data-section="prestamos" class="header-menu-item px-4 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition-colors">Préstamos</a>
-                        <a href="#" data-section="salir" class="header-menu-item px-4 py-2 rounded-md hover:bg-red-50 hover:text-red-600 transition-colors">Salir</a>
-                    </nav>
-                    
-                    <!-- Información del sistema -->
-                    <div class="flex items-center space-x-4">
-                        <div class="hidden md:block text-right">
-                            <p class="text-sm font-medium">Biblioteca Central</p>
-                            <p class="text-xs text-gray-500">Sistema de gestión</p>
-                        </div>
-                        <div class="relative">
-                            <i class="fas fa-bell text-gray-600 hover:text-blue-600 cursor-pointer"></i>
-                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
-                        </div>
+                    <!-- Botones de acción -->
+                    <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-3 mt-4 md:mt-0">
+                        <a href="{{ route('loginGet') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg transition-colors text-center">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión
+                        </a>
                     </div>
                 </div>
-            </header>
-            
-            <!-- Contenido dinámico -->
-            <main class="flex-1 overflow-y-auto p-4 md:p-6">
-                <!-- Sección Inicio (por defecto) -->
-                <section id="inicio-section" class="content-section">
-                    <div class="mb-6">
-                        <h2 class="text-2xl font-bold text-gray-800">Panel de Inicio</h2>
-                        <p class="text-gray-600">Bienvenido al sistema de administración de la biblioteca</p>
-                    </div>
-                    
-                    <!-- Estadísticas -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        <div class="bg-white rounded-lg shadow p-5 border-l-4 border-blue-500">
-                            <div class="flex items-center">
-                                <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
-                                    <i class="fas fa-users text-xl"></i>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500">Usuarios activos</p>
-                                    <p class="text-2xl font-bold">248</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-white rounded-lg shadow p-5 border-l-4 border-green-500">
-                            <div class="flex items-center">
-                                <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
-                                    <i class="fas fa-book text-xl"></i>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500">Libros en inventario</p>
-                                    <p class="text-2xl font-bold">1,847</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-white rounded-lg shadow p-5 border-l-4 border-yellow-500">
-                            <div class="flex items-center">
-                                <div class="p-3 rounded-full bg-yellow-100 text-yellow-600 mr-4">
-                                    <i class="fas fa-exchange-alt text-xl"></i>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500">Préstamos activos</p>
-                                    <p class="text-2xl font-bold">63</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-white rounded-lg shadow p-5 border-l-4 border-red-500">
-                            <div class="flex items-center">
-                                <div class="p-3 rounded-full bg-red-100 text-red-600 mr-4">
-                                    <i class="fas fa-exclamation-triangle text-xl"></i>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500">Devoluciones atrasadas</p>
-                                    <p class="text-2xl font-bold">12</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Información de actividad reciente -->
-                    <div class="bg-white rounded-lg shadow p-6">
-                        <h3 class="text-xl font-bold mb-4">Actividad Reciente</h3>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead>
-                                    <tr class="bg-gray-50">
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuario</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Libro</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha Préstamo</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">María González</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">Cien años de soledad</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">15/05/2023</td>
-                                        <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Activo</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">Carlos López</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">El principito</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">10/05/2023</td>
-                                        <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Atrasado</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">Ana Rodríguez</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">1984</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">05/05/2023</td>
-                                        <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Devuelto</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Sección Usuarios -->
-                <section id="usuarios-section" class="content-section hidden">
-                    <div class="mb-6">
-                        <h2 class="text-2xl font-bold text-gray-800">Gestión de Usuarios</h2>
-                        <p class="text-gray-600">Administra los usuarios registrados en el sistema</p>
-                    </div>
-                    
-                    <div class="bg-white rounded-lg shadow p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold">Lista de Usuarios</h3>
-                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg flex items-center">
-                                <i class="fas fa-user-plus mr-2"></i> Nuevo Usuario
-                            </button>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between">
-                                <div class="mb-4 md:mb-0">
-                                    <div class="relative">
-                                        <input type="text" placeholder="Buscar usuario..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full md:w-80">
-                                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                                    </div>
-                                </div>
-                                <div class="text-gray-500">
-                                    Mostrando 248 usuarios registrados
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead>
-                                    <tr class="bg-gray-50">
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">#001</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">María González</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">maria.gonzalez@email.com</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">555-1234</td>
-                                        <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Activo</span></td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-edit"></i></button>
-                                            <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">#002</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">Carlos López</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">carlos.lopez@email.com</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">555-5678</td>
-                                        <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Inactivo</span></td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-edit"></i></button>
-                                            <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Sección Libros -->
-                <section id="libros-section" class="content-section hidden">
-                    <div class="mb-6">
-                        <h2 class="text-2xl font-bold text-gray-800">Gestión de Libros</h2>
-                        <p class="text-gray-600">Administra el catálogo de libros de la biblioteca</p>
-                    </div>
-                    
-                    <div class="bg-white rounded-lg shadow p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold">Catálogo de Libros</h3>
-                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg flex items-center">
-                                <i class="fas fa-book-medical mr-2"></i> Agregar Libro
-                            </button>
-                        </div>
-                        
-                        <!-- Filtros -->
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
-                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <option value="">Todas las categorías</option>
-                                    <option value="literatura">Literatura</option>
-                                    <option value="ciencia">Ciencia</option>
-                                    <option value="historia">Historia</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Disponibilidad</label>
-                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <option value="">Todos</option>
-                                    <option value="disponible">Disponible</option>
-                                    <option value="prestado">Prestado</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Autor</label>
-                                <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nombre del autor">
-                            </div>
-                            <div class="flex items-end">
-                                <button class="w-full bg-gray-800 hover:bg-gray-900 text-white font-medium py-2 px-4 rounded-lg">Filtrar</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Lista de libros -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <!-- Tarjeta de libro 1 -->
-                            <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                                <div class="p-5">
-                                    <div class="flex justify-between items-start mb-3">
-                                        <h4 class="font-bold text-lg">Cien años de soledad</h4>
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Disponible</span>
-                                    </div>
-                                    <p class="text-gray-600 text-sm mb-2">Gabriel García Márquez</p>
-                                    <p class="text-gray-500 text-xs mb-4">ISBN: 978-0-307-47443-6</p>
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-gray-700 font-medium">Literatura</span>
-                                        <div>
-                                            <button class="text-blue-600 hover:text-blue-900 mr-2"><i class="fas fa-edit"></i></button>
-                                            <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Tarjeta de libro 2 -->
-                            <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                                <div class="p-5">
-                                    <div class="flex justify-between items-start mb-3">
-                                        <h4 class="font-bold text-lg">1984</h4>
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Prestado</span>
-                                    </div>
-                                    <p class="text-gray-600 text-sm mb-2">George Orwell</p>
-                                    <p class="text-gray-500 text-xs mb-4">ISBN: 978-0-452-28423-4</p>
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-gray-700 font-medium">Ciencia Ficción</span>
-                                        <div>
-                                            <button class="text-blue-600 hover:text-blue-900 mr-2"><i class="fas fa-edit"></i></button>
-                                            <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Tarjeta de libro 3 -->
-                            <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                                <div class="p-5">
-                                    <div class="flex justify-between items-start mb-3">
-                                        <h4 class="font-bold text-lg">El principito</h4>
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Disponible</span>
-                                    </div>
-                                    <p class="text-gray-600 text-sm mb-2">Antoine de Saint-Exupéry</p>
-                                    <p class="text-gray-500 text-xs mb-4">ISBN: 978-0-15-601398-7</p>
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-gray-700 font-medium">Literatura Infantil</span>
-                                        <div>
-                                            <button class="text-blue-600 hover:text-blue-900 mr-2"><i class="fas fa-edit"></i></button>
-                                            <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Sección Préstamos -->
-                <section id="prestamos-section" class="content-section hidden">
-                    <div class="mb-6">
-                        <h2 class="text-2xl font-bold text-gray-800">Gestión de Préstamos</h2>
-                        <p class="text-gray-600">Administra los préstamos y devoluciones de libros</p>
-                    </div>
-                    
-                    <div class="bg-white rounded-lg shadow p-6">
-                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
-                            <h3 class="text-xl font-bold mb-4 md:mb-0">Registro de Préstamos</h3>
-                            <div class="flex space-x-3">
-                                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg flex items-center">
-                                    <i class="fas fa-plus-circle mr-2"></i> Nuevo Préstamo
-                                </button>
-                                <button class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg flex items-center">
-                                    <i class="fas fa-check-circle mr-2"></i> Registrar Devolución
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Pestañas -->
-                        <div class="border-b border-gray-200 mb-6">
-                            <nav class="flex -mb-px">
-                                <button class="tab-link py-2 px-4 border-b-2 border-blue-500 text-blue-600 font-medium" data-tab="activos">Préstamos Activos</button>
-                                <button class="tab-link py-2 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium" data-tab="atrasados">Atrasados</button>
-                                <button class="tab-link py-2 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium" data-tab="historial">Historial</button>
-                            </nav>
-                        </div>
-                        
-                        <!-- Contenido de pestañas -->
-                        <div id="activos-tab" class="tab-content">
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead>
-                                        <tr class="bg-gray-50">
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID Préstamo</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuario</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Libro</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha Préstamo</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha Devolución</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap">#P-001</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">María González</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">Cien años de soledad</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">15/05/2023</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">30/05/2023</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <button class="bg-green-100 text-green-800 hover:bg-green-200 font-medium py-1 px-3 rounded-lg text-sm">Registrar Devolución</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap">#P-002</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">Carlos López</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">El principito</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">10/05/2023</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">25/05/2023</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <button class="bg-green-100 text-green-800 hover:bg-green-200 font-medium py-1 px-3 rounded-lg text-sm">Registrar Devolución</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <div id="atrasados-tab" class="tab-content hidden">
-                            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <i class="fas fa-exclamation-triangle text-yellow-400"></i>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-sm text-yellow-700">
-                                            Hay <strong>12 préstamos</strong> atrasados que requieren atención inmediata.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead>
-                                        <tr class="bg-gray-50">
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID Préstamo</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuario</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Libro</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha Devolución</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Días de retraso</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap">#P-045</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">Juan Pérez</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">Don Quijote de la Mancha</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">05/05/2023</td>
-                                            <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">15 días</span></td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-envelope"></i></button>
-                                                <button class="text-green-600 hover:text-green-900"><i class="fas fa-phone"></i></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <div id="historial-tab" class="tab-content hidden">
-                            <p class="text-gray-600 mb-4">Historial de todos los préstamos realizados en el sistema.</p>
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead>
-                                        <tr class="bg-gray-50">
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID Préstamo</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuario</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Libro</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha Préstamo</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha Devolución Real</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap">#P-198</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">Ana Rodríguez</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">1984</td>
-                                            <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Devuelto</span></td>
-                                            <td class="px-6 py-4 whitespace-nowrap">05/05/2023</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">20/05/2023</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Sección Salir -->
-                <section id="salir-section" class="content-section hidden">
-                    <div class="flex flex-col items-center justify-center py-12">
-                        <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-                            <div class="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-6">
-                                <i class="fas fa-sign-out-alt text-red-600 text-3xl"></i>
-                            </div>
-                            <h2 class="text-2xl font-bold text-gray-800 mb-4">¿Estás seguro de que quieres salir?</h2>
-                            <p class="text-gray-600 mb-8">Serás redirigido a la página de inicio de sesión. Asegúrate de guardar cualquier cambio pendiente.</p>
-                            <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                                <button id="confirmLogout" class="bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-6 rounded-lg flex-1">
-                                    Sí, salir del sistema
-                                </button>
-                                <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-3 px-6 rounded-lg flex-1">
-                                    Cancelar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </main>
-            
-            <!-- Footer -->
-            <footer class="bg-gray-800 text-white p-4 border-t border-gray-700">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <div class="mb-4 md:mb-0">
-                        <p class="text-sm">&copy; 2023 Biblioteca Central. Todos los derechos reservados.</p>
-                        <p class="text-xs text-gray-400 mt-1">Sistema de Administración de Biblioteca v2.1</p>
-                    </div>
-                    <div class="flex space-x-6">
-                        <a href="#" class="text-gray-300 hover:text-white text-sm">Política de privacidad</a>
-                        <a href="#" class="text-gray-300 hover:text-white text-sm">Términos de uso</a>
-                        <a href="#" class="text-gray-300 hover:text-white text-sm">Contacto</a>
-                        <a href="#" class="text-gray-300 hover:text-white text-sm">Soporte</a>
-                    </div>
-                </div>
-            </footer>
-        </div>
-    </div>
+            </div>
+        </nav>
+    </header>
 
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-gradient text-white py-20 fade-in">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center justify-between">
+                <div class="lg:w-1/2 mb-10 lg:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                        Bienvenido a la<br>
+                        <span class="text-yellow-300">Biblioteca</span>
+                    </h1>
+                    <p class="text-lg mb-8 opacity-90">
+                        Descubre un mundo de conocimiento, cultura y entretenimiento. 
+                        Más de 10,000 libros disponibles para ti.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                        <a href="#libros" class="bg-white text-purple-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-semibold transition-colors text-center">
+                            <i class="fas fa-search mr-2"></i>Explorar Catálogo
+                        </a>
+                        <a href="#" class="border-2 border-white hover:bg-white hover:text-purple-600 px-6 py-3 rounded-lg font-semibold transition-colors text-center">
+                            <i class="fas fa-user-plus mr-2"></i>Registrarse
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:w-1/2">
+                    <img src="https://via.placeholder.com/500x400/4F46E5/FFFFFF?text=Biblioteca+Digital" alt="Biblioteca" class="rounded-lg shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Libros Destacados -->
+    <section id="libros" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Libros Destacados</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Los títulos más populares entre nuestros lectores. ¡No te los pierdas!
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Libro 1 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                    <img src="https://via.placeholder.com/300x400/4F46E5/FFFFFF?text=Cien+años+soledad" alt="Libro" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-1">Cien años de soledad</h3>
+                        <p class="text-gray-600 text-sm mb-2">Gabriel García Márquez</p>
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star-half-alt text-yellow-400"></i>
+                            <span class="text-gray-500 text-sm ml-2">(4.5)</span>
+                        </div>
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors">
+                            <i class="fas fa-info-circle mr-2"></i>Más información
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Libro 2 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                    <img src="https://via.placeholder.com/300x400/7C3AED/FFFFFF?text=1984" alt="Libro" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-1">1984</h3>
+                        <p class="text-gray-600 text-sm mb-2">George Orwell</p>
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-gray-300"></i>
+                            <span class="text-gray-500 text-sm ml-2">(4.2)</span>
+                        </div>
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors">
+                            <i class="fas fa-info-circle mr-2"></i>Más información
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Libro 3 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                    <img src="https://via.placeholder.com/300x400/EC4899/FFFFFF?text=El+principito" alt="Libro" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-1">El principito</h3>
+                        <p class="text-gray-600 text-sm mb-2">Antoine de Saint-Exupéry</p>
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <span class="text-gray-500 text-sm ml-2">(4.8)</span>
+                        </div>
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors">
+                            <i class="fas fa-info-circle mr-2"></i>Más información
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Libro 4 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                    <img src="https://via.placeholder.com/300x400/10B981/FFFFFF?text=Don+Quijote" alt="Libro" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-1">Don Quijote de la Mancha</h3>
+                        <p class="text-gray-600 text-sm mb-2">Miguel de Cervantes</p>
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star-half-alt text-yellow-400"></i>
+                            <i class="fas fa-star text-gray-300"></i>
+                            <span class="text-gray-500 text-sm ml-2">(3.9)</span>
+                        </div>
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors">
+                            <i class="fas fa-info-circle mr-2"></i>Más información
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
+                    Ver todos los libros
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Servicios -->
+    <section id="servicios" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Nuestros Servicios</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Ofrecemos una amplia gama de servicios para satisfacer tus necesidades
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-book-reader text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Préstamo de Libros</h3>
+                    <p class="text-gray-600">
+                        Solicita préstamos de libros físicos y digitales de manera fácil y rápida.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-laptop text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Sala de Computo</h3>
+                    <p class="text-gray-600">
+                        Acceso gratuito a computadoras con internet y software especializado.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chalkboard-teacher text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Talleres y Cursos</h3>
+                    <p class="text-gray-600">
+                        Participa en talleres de lectura, escritura y desarrollo personal.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-headphones text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Audiolibros</h3>
+                    <p class="text-gray-600">
+                        Disfruta de nuestra colección de audiolibros para escuchar en cualquier lugar.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-users text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Clubes de Lectura</h3>
+                    <p class="text-gray-600">
+                        Únete a nuestros clubes de lectura y comparte tu pasión por los libros.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-calendar-alt text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Eventos Culturales</h3>
+                    <p class="text-gray-600">
+                        Asiste a presentaciones de libros, conferencias y actividades culturales.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Nosotros -->
+    <section id="nosotros" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2">
+                    <img src="https://via.placeholder.com/600x400/4F46E5/FFFFFF?text=Nuestra+Biblioteca" alt="Biblioteca" class="rounded-lg shadow-lg">
+                </div>
+                <div class="lg:w-1/2">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Sobre Nosotros</h2>
+                    <p class="text-gray-600 mb-4">
+                        Fundada en 1985, la Biblioteca Central se ha convertido en un referente cultural 
+                        y educativo en la comunidad. Nuestra misión es fomentar la lectura, el aprendizaje 
+                        y el acceso al conocimiento para todos.
+                    </p>
+                    <p class="text-gray-600 mb-6">
+                        Contamos con más de 10,000 volúmenes físicos, una extensa colección digital, 
+                        y un equipo comprometido con brindar el mejor servicio a nuestros usuarios.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-blue-600">10k+</div>
+                            <p class="text-gray-600 text-sm">Libros disponibles</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-blue-600">5k+</div>
+                            <p class="text-gray-600 text-sm">Usuarios activos</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-blue-600">25+</div>
+                            <p class="text-gray-600 text-sm">Años de servicio</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-blue-600">50+</div>
+                            <p class="text-gray-600 text-sm">Eventos anuales</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Contacto -->
+    <section id="contacto" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Contáctanos</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    ¿Tienes alguna pregunta? Estamos aquí para ayudarte
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <form id="contactForm" class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Nombre completo</label>
+                            <input type="text" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Correo electrónico</label>
+                            <input type="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Mensaje</label>
+                            <textarea rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                            <i class="fas fa-paper-plane mr-2"></i>Enviar mensaje
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Dirección</h3>
+                                <p class="text-gray-600">
+                                    Av. Principal #123<br>
+                                    Centro Histórico, Ciudad<br>
+                                    Código Postal: 12345
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-phone-alt text-green-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Teléfono</h3>
+                                <p class="text-gray-600">
+                                    (123) 456-7890<br>
+                                    (123) 456-7891
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-envelope text-purple-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Email</h3>
+                                <p class="text-gray-600">
+                                    info@bibliotecacentral.com<br>
+                                    soporte@bibliotecacentral.com
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="hero-gradient text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Suscríbete a nuestro Newsletter</h2>
+            <p class="text-lg mb-6 opacity-90">
+                Recibe las últimas novedades, eventos y recomendaciones de libros
+            </p>
+            <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
+                <input type="email" placeholder="Tu correo electrónico" 
+                       class="flex-1 px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold px-6 py-3 rounded-lg transition-colors">
+                    Suscribirme
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-book-open text-2xl text-blue-400"></i>
+                        <h3 class="text-xl font-bold">Biblioteca Central</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        Comprometidos con la educación y la cultura desde 1985.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Enlaces Rápidos</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#inicio" class="hover:text-white transition-colors">Inicio</a></li>
+                        <li><a href="#libros" class="hover:text-white transition-colors">Libros</a></li>
+                        <li><a href="#servicios" class="hover:text-white transition-colors">Servicios</a></li>
+                        <li><a href="#nosotros" class="hover:text-white transition-colors">Nosotros</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Horario de Atención</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li>Lunes a Viernes: 8:00 - 20:00</li>
+                        <li>Sábados: 9:00 - 18:00</li>
+                        <li>Domingos: 10:00 - 14:00</li>
+                        <li>Feriados: Cerrado</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Síguenos</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-400 transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>&copy; 2024 Biblioteca Central. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menú móvil toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+        
+        // Smooth scroll para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Cerrar menú móvil si está abierto
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+        
+        // Manejo del formulario de contacto
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.');
+                contactForm.reset();
+            });
+        }
+        
+        // Manejo del newsletter
+        const newsletterForms = document.querySelectorAll('.hero-gradient form');
+        newsletterForms.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('¡Gracias por suscribirte! Recibirás nuestras novedades en tu correo.');
+                form.reset();
+            });
+        });
+        
+        // Animación al hacer scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+        
+        // Observar secciones
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
     </html>

@@ -6,30 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('libros', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('nombre', 250);
-            $table->string('isbn', 100);
-            $table->string('autor', 250);
-            $table->string('nombre', 250);
-            $table->string('editorial', 250);
-            $table->smallinteger('editorial')->default(0);
-            $table->smallinteger('editorial')->default(0);
-            
+            $table->string('nombre',250);
+            $table->string('isbn',100);
+            $table->string('autor',250);
+            $table->string('editorial',250);
+            $table->smallInteger('estatus')->default(0);
+            $table->unsignedBigInteger('category_id'); // ← AGREGAR ESTA
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // ← AGREGAR ESTA
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('table_libros');
+        Schema::dropIfExists('libros');
     }
 };
