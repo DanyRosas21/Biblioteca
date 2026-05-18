@@ -7,11 +7,11 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libpng-dev \
     libonig-dev \
-    libxm12-dev \
+    libxml2-dev \
     zip \
     curl \
     libpq-dev \
-    && docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd 
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
